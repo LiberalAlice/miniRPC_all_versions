@@ -8,16 +8,22 @@ public class ServiceProvider {
 
     private Map<String, Object> interfaceProvider;
 
-    //    public ServiceProvider(Map<String, Object> interfaceProvider) {
-    //        this.interfaceProvider = interfaceProvider;
-    //    }
     public ServiceProvider() {
         this.interfaceProvider = new HashMap<>();
     }
 
     public void setInterfaceProvider(Object service) {
-//        interfaceProvider.put();
+        String serviceName = service.getClass().getName();
+        Class<?>[] interfaces = service.getClass().getInterfaces();
+        for (Class c:interfaces
+             ) {
+            System.out.println(c.getName());
+            interfaceProvider.put(c.getName(),service);
+        }
     }
 
+    public Object getInterface(String interfaceName) {
+        return interfaceProvider.get(interfaceName);
+    }
 
 }

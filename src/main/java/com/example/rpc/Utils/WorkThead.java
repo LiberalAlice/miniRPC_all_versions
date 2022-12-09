@@ -1,5 +1,6 @@
 package com.example.rpc.Utils;
 
+import com.example.rpc.Service.userServiceImp;
 import com.example.rpc.entity.Request;
 import com.example.rpc.entity.Response;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,6 @@ import java.util.Map;
 public class WorkThead implements Runnable {
 
     private Socket socket;
-    private Map<String, Object> serviceProvide;
 
     @Override
     public void run() {
@@ -29,22 +29,26 @@ public class WorkThead implements Runnable {
             oos.writeObject(response);
             oos.flush();
 
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException | InstantiationException e) {
             e.printStackTrace();
             System.out.println("从IO中读取数据错误");
         }
     }
 
-    private Response getResponse(Request request) {
+    private Response getResponse(Request request) throws InstantiationException {
         System.out.println(request.getInterfaceName() + " " + request.getMethodName());
 
         Method method;
         Response response = null;
         try {
-            method = serviceProvide.getClass().getDeclaredMethod(request.getMethodName(), request.getParamsTypes());
-            Object o = method.invoke(serviceProvide, request.getParams());
+            ServiceProvider provider = new ServiceProvider();
+            Object c = provider.getInterface(request.getInterfaceName());
+            System.out.println(c.getClass().getName());
+            method =  c.getClass().getDeclaredMethod(request.getMethodName(), request.getParamsTypes());
+            Object o =  method.invoke(c, request.getParams());
+
             response = Response.success(o);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException  e) {
             e.printStackTrace();
         }
         return response;
