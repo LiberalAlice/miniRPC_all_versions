@@ -16,7 +16,7 @@ public class ServiceProvider {
     }
 
     public void setInterfaceProvider(Object service) {
-
+//        interfaceProvider.put();
     }
 
 
