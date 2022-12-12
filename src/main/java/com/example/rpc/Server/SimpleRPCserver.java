@@ -12,6 +12,12 @@ import java.util.concurrent.TimeUnit;
 
 public class SimpleRPCserver implements RPCserver{
 
+    private Map<String, Object> serviceProvide;
+
+    public SimpleRPCserver(Map<String,Object> serviceProvide){
+        this.serviceProvide = serviceProvide;
+    }
+
     private static final int CORE_POOL_SIZE = 5;
     private static final int MAX_POOL_SIZE = 10;
     private static final int QUEUE_CAPACITY = 100;
@@ -29,7 +35,7 @@ public class SimpleRPCserver implements RPCserver{
             ServerSocket serverSocket = new ServerSocket(port);
             while (true) {
                 Socket socket = serverSocket.accept();
-                executor.execute(new WorkThead(socket));
+                executor.execute(new WorkThead(socket, serviceProvide));
             }
         } catch (IOException e) {
             e.printStackTrace();

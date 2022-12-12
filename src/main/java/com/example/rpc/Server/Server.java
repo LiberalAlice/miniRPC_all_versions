@@ -19,9 +19,8 @@ public class Server {
         provider.setInterfaceProvider(userServiceImp);
 
 
-
-        SimpleRPCserver rpCserver = new SimpleRPCserver();
-        rpCserver.start(PORT);
+        SimpleRPCserver rpcserver = new SimpleRPCserver(provider.getInterfaceProvider());
+        rpcserver.start(PORT);
 
     }
 }

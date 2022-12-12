@@ -12,6 +12,10 @@ public class ServiceProvider {
         this.interfaceProvider = new HashMap<>();
     }
 
+    public Map<String, Object> getInterfaceProvider() {
+        return interfaceProvider;
+    }
+
     public void setInterfaceProvider(Object service) {
         String serviceName = service.getClass().getName();
         Class<?>[] interfaces = service.getClass().getInterfaces();

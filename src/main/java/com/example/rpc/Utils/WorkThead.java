@@ -17,6 +17,7 @@ import java.util.Map;
 public class WorkThead implements Runnable {
 
     private Socket socket;
+    private Map<String, Object> serviceProvide;
 
     @Override
     public void run() {
@@ -41,9 +42,7 @@ public class WorkThead implements Runnable {
         Method method;
         Response response = null;
         try {
-            ServiceProvider provider = new ServiceProvider();
-            Object c = provider.getInterface(request.getInterfaceName());
-            System.out.println(c.getClass().getName());
+            Object c = serviceProvide.get(request.getInterfaceName());
             method =  c.getClass().getDeclaredMethod(request.getMethodName(), request.getParamsTypes());
             Object o =  method.invoke(c, request.getParams());
 
