@@ -9,6 +9,15 @@ import java.lang.reflect.Proxy;
 
 public class ClientProxy implements InvocationHandler {
 
+    private RPCClient RPCClient;
+
+    public ClientProxy(SocketIOsend socketIOsend) {
+        this.RPCClient = socketIOsend;
+    }
+
+    public ClientProxy(NettyIOsend nettyIOsend) {
+        this.RPCClient = nettyIOsend;
+    }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -17,7 +26,7 @@ public class ClientProxy implements InvocationHandler {
                 .methodName(method.getName()).params(args)
                 .paramsTypes(method.getParameterTypes()).build();
 
-        Response response = ClientIOsend.send(request);
+        Response response = RPCClient.sendRequest(request);
         return response.getData();
     }
 

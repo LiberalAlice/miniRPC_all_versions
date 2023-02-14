@@ -8,12 +8,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ClientIOsend {
+public class SocketIOsend implements RPCClient {
 
     private static final String ip = "127.0.0.1";
     private static final int port  = 8008;
 
-    public static  Response send(Request request) {
+    @Override
+    public Response sendRequest(Request request) {
         try {
             Socket socket = new Socket(ip, port);
 
@@ -31,5 +32,4 @@ public class ClientIOsend {
             return null;
         }
     }
-
 }
