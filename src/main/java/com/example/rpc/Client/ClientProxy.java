@@ -1,5 +1,7 @@
 package com.example.rpc.Client;
 
+import com.example.rpc.Client.netty.NettyRPCclient;
+import com.example.rpc.Client.socket.SocketRPCclient;
 import com.example.rpc.entity.Request;
 import com.example.rpc.entity.Response;
 
@@ -11,12 +13,12 @@ public class ClientProxy implements InvocationHandler {
 
     private RPCClient RPCClient;
 
-    public ClientProxy(SocketIOsend socketIOsend) {
-        this.RPCClient = socketIOsend;
+    public ClientProxy(SocketRPCclient socketRPCclient) {
+        this.RPCClient = socketRPCclient;
     }
 
-    public ClientProxy(NettyIOsend nettyIOsend) {
-        this.RPCClient = nettyIOsend;
+    public ClientProxy(NettyRPCclient nettyRPCclient) {
+        this.RPCClient = nettyRPCclient;
     }
 
     @Override
@@ -27,6 +29,7 @@ public class ClientProxy implements InvocationHandler {
                 .paramsTypes(method.getParameterTypes()).build();
 
         Response response = RPCClient.sendRequest(request);
+        System.out.println("已发送");
         return response.getData();
     }
 

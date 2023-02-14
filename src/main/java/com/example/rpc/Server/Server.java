@@ -1,7 +1,7 @@
 package com.example.rpc.Server;
 
-import com.example.rpc.Service.BlogService;
-import com.example.rpc.Service.UserService;
+import com.example.rpc.Server.netty.NettyRPCserver;
+import com.example.rpc.Server.socket.SimpleRPCserver;
 import com.example.rpc.Service.blogServiceImp;
 import com.example.rpc.Service.userServiceImp;
 import com.example.rpc.Utils.ServiceProvider;
@@ -20,7 +20,11 @@ public class Server {
 
 
         SimpleRPCserver rpcserver = new SimpleRPCserver(provider.getInterfaceProvider());
-        rpcserver.start(PORT);
+        //rpcserver.start(PORT);
+
+        NettyRPCserver nettyRPCserver = new NettyRPCserver(provider.getInterfaceProvider());
+        nettyRPCserver.start(PORT);
+
 
     }
 }

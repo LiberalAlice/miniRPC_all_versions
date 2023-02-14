@@ -1,6 +1,6 @@
-package com.example.rpc.Server;
+package com.example.rpc.Server.socket;
 
-import com.example.rpc.Utils.WorkThead;
+import com.example.rpc.Server.RPCserver;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -10,7 +10,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class SimpleRPCserver implements RPCserver{
+public class SimpleRPCserver implements RPCserver {
 
     private Map<String, Object> serviceProvide;
 
