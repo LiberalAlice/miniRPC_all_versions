@@ -2,8 +2,8 @@ package com.example.rpc.Server;
 
 import com.example.rpc.Server.netty.NettyRPCserver;
 import com.example.rpc.Server.socket.SimpleRPCserver;
-import com.example.rpc.Service.blogServiceImp;
-import com.example.rpc.Service.userServiceImp;
+import com.example.rpc.Service.BlogServiceImp;
+import com.example.rpc.Service.UserServiceImpl;
 import com.example.rpc.Utils.ServiceProvider;
 
 
@@ -12,11 +12,11 @@ public class Server {
     private final static int PORT = 8008;
 
     public static void main(String[] args) {
-        blogServiceImp blogServiceImp = new blogServiceImp();
-        userServiceImp userServiceImp = new userServiceImp();
+        BlogServiceImp blogServiceImp = new BlogServiceImp();
+        UserServiceImpl userServiceImpl = new UserServiceImpl();
         ServiceProvider provider = new ServiceProvider();
         provider.setInterfaceProvider(blogServiceImp);
-        provider.setInterfaceProvider(userServiceImp);
+        provider.setInterfaceProvider(userServiceImpl);
 
 
         SimpleRPCserver rpcserver = new SimpleRPCserver(provider.getInterfaceProvider());
