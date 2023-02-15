@@ -1,6 +1,7 @@
 package com.example.rpc.Server.netty;
 
 import com.example.rpc.Server.RPCserver;
+import com.example.rpc.Utils.ServiceProvider;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -15,14 +16,14 @@ import java.util.Map;
  */
 public class NettyRPCserver implements RPCserver {
 
-    private Map<String, Object> serviceProvider;
+    private ServiceProvider serviceProvider;
 
-    public NettyRPCserver(Map<String, Object> serviceProvider) {
+    public NettyRPCserver(ServiceProvider serviceProvider) {
         this.serviceProvider = serviceProvider;
     }
 
     @Override
-    public void start(int port) {
+    public void start() {
         //建立连接
         NioEventLoopGroup boss = new NioEventLoopGroup();
         //负责请求
@@ -36,10 +37,10 @@ public class NettyRPCserver implements RPCserver {
                 // 3、选择服务器的 ServerSocketChannel 实现
                 .channel(NioServerSocketChannel.class)
                 // 4、child 负责处理读写，该方法决定了 child 执行哪些操作
-                .childHandler(new NettyServerInitializer(serviceProvider));
+                .childHandler(new NettyServerInitializer(serviceProvider.getInterfaceProvider()));
 
             System.out.println("绑定端口。。。。。。。。。。");
-            ChannelFuture future = serverBootstrap.bind(port).sync();
+            ChannelFuture future = serverBootstrap.bind(serviceProvider.port).sync();
             System.out.println("同步阻塞中。。。。。。。。。。");
             future.channel().closeFuture().sync();
             System.out.println("同步成功。。。。。。。。。。");

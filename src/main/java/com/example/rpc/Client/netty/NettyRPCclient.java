@@ -1,9 +1,9 @@
 package com.example.rpc.Client.netty;
 
 import com.example.rpc.Client.RPCClient;
-import com.example.rpc.Client.netty.NettyClientHandle;
 import com.example.rpc.Client.socket.SocketRPCclient;
-import com.example.rpc.Server.netty.NettyServerInitializer;
+import com.example.rpc.Utils.ServiceRegister;
+import com.example.rpc.Utils.ZKserviceRegister;
 import com.example.rpc.entity.Request;
 import com.example.rpc.entity.Response;
 import io.netty.bootstrap.Bootstrap;
@@ -16,6 +16,8 @@ import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 /**
  * @Author：wuwei
  * @name：nettyRPCClient
@@ -23,13 +25,20 @@ import org.slf4j.LoggerFactory;
  */
 public class NettyRPCclient implements RPCClient {
 
-    private static final String ip = "127.0.0.1";
-    private static final int port = 8008;
+    private String ip;
+    private int port;
     private static final Bootstrap bootstrap;
     private static final EventLoopGroup eventLoopGroup;
 
     private static final Logger log = LoggerFactory.getLogger(SocketRPCclient.class);
 
+    private ServiceRegister serviceRegister;
+
+    public NettyRPCclient() {
+        // 初始化注册中心，建立连接
+        this.serviceRegister = new ZKserviceRegister();
+        System.out.println("建立连接成功。。。。。。。。。");
+    }
 
     static {
         eventLoopGroup = new NioEventLoopGroup();
@@ -43,15 +52,25 @@ public class NettyRPCclient implements RPCClient {
 
     @Override
     public Response sendRequest(Request request) {
+        List<String> urls = serviceRegister.serviceDiscovery(request.getInterfaceName());
+        String url = urls.get(0);
+        int index = url.indexOf(":");
+        ip = url.substring(0, index);
+        System.out.println(ip + "........................");
+        port = Integer.parseInt(url.substring(index + 1));
+
+        System.out.println(port + "........................");
+        System.out.println(url);
+
         System.out.println("netty发送数据。。。。。");
 
         try {
             ChannelFuture channelFuture = bootstrap.connect(ip, port).sync();
             Channel channel = channelFuture.channel();
             channel.writeAndFlush(request);
+            System.out.println("netty发送数据成功。。。。。");
             channel.closeFuture().sync();
             AttributeKey<Response> value = AttributeKey.valueOf("Response");
-            System.out.println("netty发送数据成功。。。。。" + value);
             Response response = channel.attr(value).get();
             if (response == null) {
                 System.out.println("null..........");

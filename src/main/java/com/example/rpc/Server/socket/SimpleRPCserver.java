@@ -30,9 +30,9 @@ public class SimpleRPCserver implements RPCserver {
 
 
     @Override
-    public void start(int port) {
+    public void start() {
         try {
-            ServerSocket serverSocket = new ServerSocket(port);
+            ServerSocket serverSocket = new ServerSocket();
             while (true) {
                 Socket socket = serverSocket.accept();
                 executor.execute(new WorkThead(socket, serviceProvide));

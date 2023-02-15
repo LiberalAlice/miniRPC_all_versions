@@ -10,11 +10,12 @@ import com.example.rpc.Utils.ServiceProvider;
 public class Server {
 
     private final static int PORT = 8008;
+    private final static String IP = "192.168.137.1";
 
     public static void main(String[] args) {
         BlogServiceImp blogServiceImp = new BlogServiceImp();
         UserServiceImpl userServiceImpl = new UserServiceImpl();
-        ServiceProvider provider = new ServiceProvider();
+        ServiceProvider provider = new ServiceProvider(IP, PORT);
         provider.setInterfaceProvider(blogServiceImp);
         provider.setInterfaceProvider(userServiceImpl);
 
@@ -22,8 +23,8 @@ public class Server {
         SimpleRPCserver rpcserver = new SimpleRPCserver(provider.getInterfaceProvider());
         //rpcserver.start(PORT);
 
-        NettyRPCserver nettyRPCserver = new NettyRPCserver(provider.getInterfaceProvider());
-        nettyRPCserver.start(PORT);
+        NettyRPCserver nettyRPCserver = new NettyRPCserver(provider);
+        nettyRPCserver.start();
 
 
     }
