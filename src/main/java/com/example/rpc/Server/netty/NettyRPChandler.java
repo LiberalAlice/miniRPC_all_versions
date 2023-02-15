@@ -38,7 +38,7 @@ public class NettyRPChandler extends SimpleChannelInboundHandler<Request> {
 
     private Response getResponse(Request request) throws InstantiationException {
         System.out.println("netty调用方法中。。。。。。。。。。。。。");
-        Method method;
+        Method method = null;
         try {
             Object c = serviceProvider.get(request.getInterfaceName());
             method =  c.getClass().getDeclaredMethod(request.getMethodName(), request.getParamsTypes());

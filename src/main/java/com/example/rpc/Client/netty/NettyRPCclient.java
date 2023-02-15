@@ -3,6 +3,7 @@ package com.example.rpc.Client.netty;
 import com.example.rpc.Client.RPCClient;
 import com.example.rpc.Client.netty.NettyClientHandle;
 import com.example.rpc.Client.socket.SocketRPCclient;
+import com.example.rpc.Server.netty.NettyServerInitializer;
 import com.example.rpc.entity.Request;
 import com.example.rpc.entity.Response;
 import io.netty.bootstrap.Bootstrap;
@@ -35,7 +36,7 @@ public class NettyRPCclient implements RPCClient {
         bootstrap = new Bootstrap();
         bootstrap.group(eventLoopGroup)
                 .channel(NioSocketChannel.class)
-                .handler(new NettyClientHandle());
+                .handler(new NettyClientInitializer());
 
     }
 
@@ -49,9 +50,12 @@ public class NettyRPCclient implements RPCClient {
             Channel channel = channelFuture.channel();
             channel.writeAndFlush(request);
             channel.closeFuture().sync();
-            AttributeKey<Response> value = AttributeKey.valueOf(Request.class.getName());
-            System.out.println("netty发送数据成功。。。。。");
+            AttributeKey<Response> value = AttributeKey.valueOf("Response");
+            System.out.println("netty发送数据成功。。。。。" + value);
             Response response = channel.attr(value).get();
+            if (response == null) {
+                System.out.println("null..........");
+            }
             return response;
         } catch (InterruptedException e) {
             e.printStackTrace();
