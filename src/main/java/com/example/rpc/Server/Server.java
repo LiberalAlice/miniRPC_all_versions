@@ -32,13 +32,6 @@ public class Server {
                         Request request = (Request) ois.readObject();
                         System.out.println(request.getInterfaceName() + " " + request.getMethodName());
 
-
-//                        Class c = request.getInterfaceName().getClass();
-//                        Class c = Class.forName(request.getInterfaceName());
-//
-//                        Object instance = c.newInstance();
-//                        System.out.println(c.getName() + " " + instance.getClass());
-
                         Method method =  service.getClass().getDeclaredMethod(request.getMethodName(), request.getParamsTypes());
 
                         Object o =  method.invoke(service, request.getParams());
