@@ -25,7 +25,6 @@ public class NettyRPChandler extends SimpleChannelInboundHandler<Request> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Request request) throws Exception {
-        System.out.println("执行channel。。。。。。。。。。。。");
         ctx.writeAndFlush(getResponse(request));
         ctx.close();
     }
@@ -37,7 +36,6 @@ public class NettyRPChandler extends SimpleChannelInboundHandler<Request> {
     }
 
     private Response getResponse(Request request) throws InstantiationException {
-        System.out.println("netty调用方法中。。。。。。。。。。。。。");
         Method method = null;
         try {
             Object c = serviceProvider.get(request.getInterfaceName());

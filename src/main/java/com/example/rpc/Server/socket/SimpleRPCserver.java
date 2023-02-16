@@ -1,20 +1,20 @@
 package com.example.rpc.Server.socket;
 
 import com.example.rpc.Server.RPCserver;
+import com.example.rpc.Utils.ServiceProvider;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class SimpleRPCserver implements RPCserver {
 
-    private Map<String, Object> serviceProvide;
+    private ServiceProvider serviceProvide;
 
-    public SimpleRPCserver(Map<String,Object> serviceProvide){
+    public SimpleRPCserver(ServiceProvider serviceProvide) {
         this.serviceProvide = serviceProvide;
     }
 
@@ -32,10 +32,10 @@ public class SimpleRPCserver implements RPCserver {
     @Override
     public void start() {
         try {
-            ServerSocket serverSocket = new ServerSocket();
+            ServerSocket serverSocket = new ServerSocket(serviceProvide.port);
             while (true) {
                 Socket socket = serverSocket.accept();
-                executor.execute(new WorkThead(socket, serviceProvide));
+                executor.execute(new WorkThead(socket, serviceProvide.getInterfaceProvider()));
             }
         } catch (IOException e) {
             e.printStackTrace();

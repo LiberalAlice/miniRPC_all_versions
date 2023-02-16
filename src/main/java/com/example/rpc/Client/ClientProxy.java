@@ -29,7 +29,6 @@ public class ClientProxy implements InvocationHandler {
                 .paramsTypes(method.getParameterTypes()).build();
 
         Response response = RPCClient.sendRequest(request);
-        System.out.println("已发送");
         return response.getData();
     }
 

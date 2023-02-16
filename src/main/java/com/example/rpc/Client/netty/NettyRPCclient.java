@@ -37,7 +37,7 @@ public class NettyRPCclient implements RPCClient {
     public NettyRPCclient() {
         // 初始化注册中心，建立连接
         this.serviceRegister = new ZKserviceRegister();
-        System.out.println("建立连接成功。。。。。。。。。");
+        log.info("建立连接成功。。。。。。。。。");
     }
 
     static {
@@ -56,24 +56,19 @@ public class NettyRPCclient implements RPCClient {
         String url = urls.get(0);
         int index = url.indexOf(":");
         ip = url.substring(0, index);
-        System.out.println(ip + "........................");
         port = Integer.parseInt(url.substring(index + 1));
 
-        System.out.println(port + "........................");
-        System.out.println(url);
-
-        System.out.println("netty发送数据。。。。。");
 
         try {
             ChannelFuture channelFuture = bootstrap.connect(ip, port).sync();
             Channel channel = channelFuture.channel();
             channel.writeAndFlush(request);
-            System.out.println("netty发送数据成功。。。。。");
+            log.info("netty发送数据成功。。。。。");
             channel.closeFuture().sync();
             AttributeKey<Response> value = AttributeKey.valueOf("Response");
             Response response = channel.attr(value).get();
             if (response == null) {
-                System.out.println("null..........");
+                log.warn("Response is null..........");
             }
             return response;
         } catch (InterruptedException e) {

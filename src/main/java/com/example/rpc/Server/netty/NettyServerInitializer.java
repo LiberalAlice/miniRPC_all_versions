@@ -1,6 +1,7 @@
 package com.example.rpc.Server.netty;
 
 import com.example.rpc.Server.netty.NettyRPChandler;
+import com.example.rpc.Utils.ZKserviceRegister;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -9,6 +10,8 @@ import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.serialization.ClassResolver;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -25,9 +28,11 @@ public class NettyServerInitializer extends ChannelInitializer<SocketChannel> {
         this.serviceProvider = serviceProvider;
     }
 
+    private static final Logger log = LoggerFactory.getLogger(ZKserviceRegister.class);
+
     @Override
     protected void initChannel(SocketChannel sc) throws Exception {
-        System.out.println("netty初始化中。。。。。。。。。");
+        log.info("netty初始化中。。。。。。。。。");
         ChannelPipeline pipeline = sc.pipeline();
         // 消息格式 [长度][消息体], 解决粘包问题
         pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
@@ -43,6 +48,6 @@ public class NettyServerInitializer extends ChannelInitializer<SocketChannel> {
         }));
 
         pipeline.addLast(new NettyRPChandler(serviceProvider));
-        System.out.println("netty初始化完成。。。。。。。。。");
+        log.info("netty初始化完成。。。。。。。。。");
     }
 }

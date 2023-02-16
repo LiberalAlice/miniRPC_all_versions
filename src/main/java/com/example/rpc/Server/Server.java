@@ -20,8 +20,8 @@ public class Server {
         provider.setInterfaceProvider(userServiceImpl);
 
 
-        SimpleRPCserver rpcserver = new SimpleRPCserver(provider.getInterfaceProvider());
-        //rpcserver.start(PORT);
+        SimpleRPCserver rpcserver = new SimpleRPCserver(provider);
+        rpcserver.start();
 
         NettyRPCserver nettyRPCserver = new NettyRPCserver(provider);
         nettyRPCserver.start();
