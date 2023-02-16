@@ -29,6 +29,7 @@ public class ServiceProvider {
              ) {
             interfaceProvider.put(c.getName(),service);
             serviceRegister.register(c.getName(), host + ":" + port);
+            serviceRegister.registerWatch("/" + c.getName());
         }
     }
 

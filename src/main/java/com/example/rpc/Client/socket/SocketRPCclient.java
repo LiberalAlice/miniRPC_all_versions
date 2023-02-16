@@ -28,14 +28,14 @@ public class SocketRPCclient implements RPCClient {
 
     @Override
     public Response sendRequest(Request request) {
-        List<String> urls = serviceRegister.serviceDiscovery(request.getInterfaceName());
-        String url = urls.get(0);
+        String url = serviceRegister.serviceDiscovery(request.getInterfaceName());
         int index = url.indexOf(":");
         String ip = url.substring(0, index);
         int port = Integer.parseInt(url.substring(index + 1));
 
         try {
             Socket socket = new Socket(ip, port);
+            System.out.println(ip + " ::::" + port);
 
             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());

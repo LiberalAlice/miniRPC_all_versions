@@ -52,8 +52,7 @@ public class NettyRPCclient implements RPCClient {
 
     @Override
     public Response sendRequest(Request request) {
-        List<String> urls = serviceRegister.serviceDiscovery(request.getInterfaceName());
-        String url = urls.get(0);
+        String url = serviceRegister.serviceDiscovery(request.getInterfaceName());
         int index = url.indexOf(":");
         ip = url.substring(0, index);
         port = Integer.parseInt(url.substring(index + 1));

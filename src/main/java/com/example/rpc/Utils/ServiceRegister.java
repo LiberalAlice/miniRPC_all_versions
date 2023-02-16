@@ -11,6 +11,8 @@ public interface ServiceRegister {
 
     void register(String serviceName, String socketAddress);
 
-    List<String> serviceDiscovery(String serviceName);
+    String serviceDiscovery(String serviceName);
+
+    void registerWatch(String servicePath);
 
 }

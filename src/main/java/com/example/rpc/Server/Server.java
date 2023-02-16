@@ -20,8 +20,9 @@ public class Server {
         provider.setInterfaceProvider(userServiceImpl);
 
 
+        //rpc服务只能同时开启一个，否则会造成底层传输方式错误报错
         SimpleRPCserver rpcserver = new SimpleRPCserver(provider);
-        rpcserver.start();
+        //rpcserver.start();
 
         NettyRPCserver nettyRPCserver = new NettyRPCserver(provider);
         nettyRPCserver.start();
