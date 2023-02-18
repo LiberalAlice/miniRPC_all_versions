@@ -13,9 +13,7 @@
 
 1. RPC（remote procedure call）即远程过程调用，一般是使用在分布式的微服务中，不同的微服务只对外暴露接口，而rpc则是负责传输文件，返回调用得到的数据/对象。
 2. rpc可以理解为一种网络传输的针对服务端之间调用的具体实现，可以基于HTTP也可以基于TCP协议来实现，http是以head加body为报文，在head中会有非常多的参数来声明当前连接的一些状态，而rpc为了尽量提高服务端之间调用的性能，可以用tcp来实现，而舍弃掉繁复的数据头。
-3. rpc调用时为了返回数据，需要实现序列化，简易流程如下
-
-![image-20221104111040857](C:\Users\Liberal Wu\Documents\MarkDown\Work\image-20221104111040857.png)
+3. rpc调用时为了返回数据，需要实现序列化，简易流程如下![image-20221104111040857](https://s2.loli.net/2023/02/18/9IpSUkZiXrcADTx.png)
 
 ## Version_0
 
@@ -33,7 +31,7 @@
 
 新增服务提供类，用hashmap来存储全称类名，更改服务端，使用线程池来实现监听客户端的信息，抽象出rpc服务端的代码。
 
-![image-20221212142234643](C:\Users\Liberal Wu\Documents\MarkDown\Work\image-20221212142234643.png)
+![image-20221212142234643](https://s2.loli.net/2023/02/18/ri7bownFE3NZxjz.png)
 
 注意点： 
 
@@ -56,7 +54,7 @@
 
 在ClientProxy新增netty的实现方式，使用netty进行底层网络传输，并设置netty为NIO的监听方式。
 
-![image-20230215105325396](C:\Users\Liberal Wu\Documents\MarkDown\Work\image-20230215105325396.png)
+![image-20230215105325396](https://s2.loli.net/2023/02/18/Adg5cn4bSNl9T6C.png)
 
 注意点： 
 
@@ -77,7 +75,7 @@
 
 新增ServiceRegister类，重构serviceProvider类，使用zookeeper实现服务注册和服务发现的功能，并重构客户端和服务端的服务类。
 
-![image-20230216102043048](C:\Users\Liberal Wu\Documents\MarkDown\Work\image-20230216102043048.png)
+![image-20230216102043048](https://s2.loli.net/2023/02/18/Q2DikUm6IzLcrEs.png)
 
 注意点： 
 
@@ -97,7 +95,7 @@
 
 重构服务发现类，使其实现负载均衡，新增服务状态监听功能，当访问地址数超过限定值后自动切换负载均衡方案为随机，默认为轮询。
 
-![image-20230216150259192](C:\Users\Liberal Wu\Documents\MarkDown\Work\image-20230216150259192.png)
+![image-20230216150259192](https://s2.loli.net/2023/02/18/3DESRzqQdc6GNOm.png)
 
 注意点： 
 
